@@ -14,7 +14,7 @@ st.write("""
 # Prediksi Probabilitas Sakit Jantung
 Aplikasi ini akan memprediksi probabilitas sakit jantung berdasarkan beberapa parameter yang anda berikan!
 \n ***Aplikasi ini tidak memberikan diagnosis, kunjungi fasilitas kesehatan terdekat untuk info lebih lanjut!***
-\n Silahkan masukkan data anda pada menu di samping! Prediksi akan diperbaharui bersamaan dengan masukkan data yang ada berikan.
+\n Silahkan masukkan data anda pada menu di samping! Prediksi akan diperbaharui bersamaan dengan masukkan data yang anda berikan.
 
 """)
 

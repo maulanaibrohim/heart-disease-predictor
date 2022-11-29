@@ -1,9 +1,11 @@
+#import packages 
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
 from sklearn.ensemble import RandomForestClassifier
 
+#set web page
 st.set_page_config(
     page_title='Prediksi Sakit Jantung', 
     page_icon=':heartbeat:',
@@ -18,13 +20,14 @@ Aplikasi ini akan memprediksi probabilitas sakit jantung berdasarkan beberapa pa
 
 """)
 
-# Sidebar
-## Header
+#set sidebar
+#set header 
 st.sidebar.header('Masukkan informasi berikut!')
 st.sidebar.markdown("""
 *Informasi tersebut digunakan sebagai parameter prediksi!*
 """)
 
+#create function and interface to collect data from user
 def user_input_features():
     age=st.sidebar.number_input(
         label='Usia (Tahun)', 
@@ -102,6 +105,7 @@ def user_input_features():
             'Flat',
             'Down-sloping')
         )
+    #encode data corresponding to dataset
     st.sidebar.caption('**ST-slope merupakan kemiringan segmen ST latihan puncak*')
     if sex=='Pria':
         sex='M'
@@ -136,7 +140,7 @@ def user_input_features():
         sts='Up'
     elif sts=='Down-sloping':
         sts='Down'
-
+    #assign collected data to a variable
     data = {
         'Age': age,
         'Sex': sex,
@@ -154,22 +158,24 @@ def user_input_features():
     return features
 input_df = user_input_features()
 
-# Read dataset
+#read datset
 heart_raw = pd.read_csv('heart.csv')
 heart = heart_raw.drop(columns=['HeartDisease'])
+#merge with user input
 df = pd.concat([input_df, heart], axis=0)
-
-
+#one hot encoding data
 df = pd.get_dummies(df)
-df = df[:1] # Selects only the first row (the user input data)
+#get first row of dataset (which mean user input)
+df = df[:1]
 
-## Reads machine learning models
+#read machine learning model
 load_clf = pickle.load(open('heart_predict.pkl', 'rb'))
 
-## Apply models
+#apply model
 predictions = load_clf.predict(df)
 prediction_proba = load_clf.predict_proba(df).round(decimals=2)
 
+#seting output prediction and interface
 st.subheader('Prediksi anda memiliki penyakit jantung')
 if predictions < 1:
     st.write('Anda mungkin tidak memiliki penyakit jantung. Tetaplah jaga kesehatan!')
